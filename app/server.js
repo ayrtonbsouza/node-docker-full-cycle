@@ -14,8 +14,14 @@ const config = {
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
 
-// App
 const app = express();
+
+const sql = `INSERT INTO people(name) values('Ayrton')`
+
+connection.query(sql)
+
+connection.end()
+
 app.get('/', (req, res) => {
 
   const query = 'SELECT nome FROM people';
@@ -30,8 +36,6 @@ app.get('/', (req, res) => {
 
     res.send(html);
   });
-
-  //res.send('<h1>Full Cycle</h1>');
 });
 
 app.listen(PORT, HOST);
