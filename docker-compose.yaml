@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+    myapp:
+        build:
+            context: app        
+        entrypoint: dockerize -wait tcp://mysql:3306 -timeout 30s node server.js
+        networks:
+            - backend
+            - frontend
+        restart: always
+        depends_on: 
+            - mysql
+
+    nginx:
+        build:
+            context: web        
+        entrypoint: dockerize -wait tcp://myapp:8080 -timeout 30s /docker-entrypoint.sh nginx -g "daemon off;"
+        networks: 
+            - frontend
+        ports: 
+            - "8080:8080"
+        restart: always
+        depends_on: 
+            - myapp        
+
+    mysql:
+        build:
+            context: db        
+        command: --innodb-use-native-aio=0        
+        networks: 
+            - backend
+        restart: always
+        tty: true
+
+networks:
+    frontend:        
+        driver: bridge
+    backend:    
+        driver: bridge
