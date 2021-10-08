@@ -2,6 +2,7 @@
 
 const express = require('express');
 
+// Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
@@ -13,15 +14,11 @@ const config = {
 };
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
-
-const app = express();
-
-const sql = `INSERT INTO people(name) values('Ayrton')`
-
+const sql = `INSERT INTO people(nome) values('Ayrton')`
 connection.query(sql)
 
-connection.end()
-
+// App
+const app = express();
 app.get('/', (req, res) => {
 
   const query = 'SELECT nome FROM people';
@@ -36,6 +33,8 @@ app.get('/', (req, res) => {
 
     res.send(html);
   });
+
+  //res.send('<h1>Full Cycle</h1>');
 });
 
 app.listen(PORT, HOST);

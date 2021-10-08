@@ -27,12 +27,16 @@ services:
 
     mysql:
         build:
-            context: db        
-        command: --innodb-use-native-aio=0        
-        networks: 
-            - backend
+            context: db
+        image: mysql:5.7
+        command: --innodb-use-native-aio=0
         restart: always
         tty: true
+        environment:
+        - MYSQL_DATABASE=fullcycle
+        - MYSQL_ROOT_PASSWORD=root
+        networks:
+        - backend
 
 networks:
     frontend:        
